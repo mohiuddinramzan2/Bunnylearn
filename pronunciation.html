@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Pronunciation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --border: #2a2a2a;
+    --accent: #e8d5a3;
+    --accent2: #c4a882;
+    --text: #f0ece4;
+    --muted: #666;
+    --playing: #4ade80;
+    --error: #f87171;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1.1;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* Input area */
+  .input-section {
+    width: 100%;
+    max-width: 680px;
+    margin-bottom: 36px;
+  }
+
+  .input-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .input-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  textarea {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    padding: 16px;
+    border-radius: 6px;
+    resize: none;
+    height: 80px;
+    outline: none;
+    transition: border-color 0.2s;
+    line-height: 1.5;
+  }
+
+  textarea:focus {
+    border-color: var(--accent2);
+  }
+
+  textarea::placeholder { color: var(--muted); }
+
+  /* Controls */
+  .controls {
+    width: 100%;
+    max-width: 680px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+  }
+
+  .controls-title {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .control-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .control-group label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .control-group span {
+    font-size: 12px;
+    color: var(--accent);
+    min-width: 36px;
+    display: inline-block;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  /* Voice selector */
+  select {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  select option { background: #1a1a1a; }
+
+  /* Main play button */
+  .play-section {
+    width: 100%;
+    max-width: 680px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+
+  .btn-play {
+    flex: 1;
+    background: var(--accent);
+    color: #0d0d0d;
+    border: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 16px 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.15s, transform 0.1s;
+  }
+
+  .btn-play:hover { background: #f0e0b0; }
+  .btn-play:active { transform: scale(0.98); }
+
+  .btn-play.playing {
+    background: var(--playing);
+  }
+
+  .btn-play.playing:hover { background: #6ee7a0; }
+
+  .btn-repeat {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 16px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.05em;
+    transition: border-color 0.2s, color 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-repeat:hover {
+    border-color: var(--accent2);
+    color: var(--accent);
+  }
+
+  .btn-repeat.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(232,213,163,0.06);
+  }
+
+  .btn-stop {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 16px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-stop:hover {
+    border-color: var(--error);
+    color: var(--error);
+  }
+
+  /* Status bar */
+  .status-bar {
+    width: 100%;
+    max-width: 680px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 32px;
+    padding: 0 4px;
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--muted);
+    transition: background 0.3s;
+    flex-shrink: 0;
+  }
+
+  .status-dot.active { background: var(--playing); box-shadow: 0 0 8px var(--playing); }
+  .status-dot.error { background: var(--error); }
+
+  .status-text {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* Waveform animation */
+  .waveform {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 20px;
+    margin-left: auto;
+  }
+
+  .wave-bar {
+    width: 3px;
+    background: var(--accent);
+    border-radius: 2px;
+    height: 4px;
+    transition: height 0.1s;
+  }
+
+  .waveform.playing .wave-bar:nth-child(1) { animation: wave 0.9s ease-in-out infinite 0.0s; }
+  .waveform.playing .wave-bar:nth-child(2) { animation: wave 0.9s ease-in-out infinite 0.15s; }
+  .waveform.playing .wave-bar:nth-child(3) { animation: wave 0.9s ease-in-out infinite 0.3s; }
+  .waveform.playing .wave-bar:nth-child(4) { animation: wave 0.9s ease-in-out infinite 0.45s; }
+  .waveform.playing .wave-bar:nth-child(5) { animation: wave 0.9s ease-in-out infinite 0.6s; }
+
+  @keyframes wave {
+    0%, 100% { height: 4px; }
+    50% { height: 18px; }
+  }
+
+  /* Preset phrases */
+  .presets {
+    width: 100%;
+    max-width: 680px;
+  }
+
+  .presets-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .presets-title {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .preset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+  }
+
+  .preset-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 12px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: left;
+    line-height: 1.4;
+    transition: border-color 0.15s, background 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .preset-btn:hover {
+    border-color: var(--accent2);
+    background: rgba(232,213,163,0.04);
+  }
+
+  .preset-btn .icon {
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+
+  /* Repeat count badge */
+  .repeat-badge {
+    background: rgba(232,213,163,0.15);
+    color: var(--accent);
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 6px;
+  }
+
+  @media (max-width: 500px) {
+    .play-section { flex-wrap: wrap; }
+    .btn-play { order: 0; }
+    .btn-repeat, .btn-stop { flex: 1; }
+    .control-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Web Speech API</p>
+  <h1>English <em>Pronunciation</em></h1>
+  <p class="subtitle">Type any text — hear it spoken aloud</p>
+</header>
+
+<!-- Input -->
+<div class="input-section">
+  <label class="input-label" for="textInput">Text to pronounce</label>
+  <textarea id="textInput" placeholder="Type or paste English text here…" rows="3">The quick brown fox jumps over the lazy dog.</textarea>
+</div>
+
+<!-- Controls -->
+<div class="controls">
+  <div class="controls-title">Voice Settings</div>
+  <div class="control-row">
+    <div class="control-group">
+      <label>Voice</label>
+      <select id="voiceSelect"><option value="">Loading voices…</option></select>
+    </div>
+    <div class="control-group">
+      <label>Speed — <span id="rateVal">1.0</span>x</label>
+      <input type="range" id="rateRange" min="0.5" max="2" step="0.1" value="1.0">
+    </div>
+    <div class="control-group">
+      <label>Pitch — <span id="pitchVal">1.0</span></label>
+      <input type="range" id="pitchRange" min="0.5" max="2" step="0.1" value="1.0">
+    </div>
+  </div>
+</div>
+
+<!-- Play buttons -->
+<div class="play-section">
+  <button class="btn-play" id="playBtn" onclick="togglePlay()">
+    <span id="playIcon">▶</span>
+    <span id="playLabel">Play Pronunciation</span>
+  </button>
+  <button class="btn-repeat" id="repeatBtn" onclick="toggleRepeat()" title="Loop playback">
+    ↻ Repeat<span class="repeat-badge" id="repeatBadge" style="display:none">ON</span>
+  </button>
+  <button class="btn-stop" onclick="stopSpeech()" title="Stop">■</button>
+</div>
+
+<!-- Status -->
+<div class="status-bar">
+  <div class="status-dot" id="statusDot"></div>
+  <span class="status-text" id="statusText">Ready</span>
+  <div class="waveform" id="waveform">
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+  </div>
+</div>
+
+<!-- Presets -->
+<div class="presets">
+  <div class="presets-header">
+    <span class="presets-title">Common Phrases</span>
+  </div>
+  <div class="preset-grid" id="presetGrid"></div>
+</div>
+
+<script>
+const synth = window.speechSynthesis;
+let voices = [];
+let repeatMode = false;
+let currentUtterance = null;
+
+const PRESETS = [
+  { icon: '👋', text: 'Hello, how are you today?' },
+  { icon: '🙏', text: 'Thank you very much!' },
+  { icon: '😄', text: "Nice to meet you." },
+  { icon: '🕐', text: "What time is it?" },
+  { icon: '🗺️', text: "Could you help me find the way?" },
+  { icon: '☁️', text: "The weather is beautiful today." },
+  { icon: '🍽️', text: "I'd like to order, please." },
+  { icon: '📞', text: "Can I speak to the manager?" },
+  { icon: '🎓', text: "I'm still learning English." },
+  { icon: '✅', text: "I understand. That makes sense." },
+  { icon: '❓', text: "Could you repeat that, please?" },
+  { icon: '💼', text: "Let's schedule a meeting." },
+];
+
+// Populate presets
+const grid = document.getElementById('presetGrid');
+PRESETS.forEach(p => {
+  const btn = document.createElement('button');
+  btn.className = 'preset-btn';
+  btn.innerHTML = `<span class="icon">${p.icon}</span>${p.text}`;
+  btn.onclick = () => {
+    document.getElementById('textInput').value = p.text;
+    startSpeech();
+  };
+  grid.appendChild(btn);
+});
+
+// Load voices
+function loadVoices() {
+  voices = synth.getVoices().filter(v => v.lang.startsWith('en'));
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+
+  // Preferred voices
+  const preferred = voices.filter(v =>
+    v.name.toLowerCase().includes('natural') ||
+    v.name.toLowerCase().includes('enhanced') ||
+    v.name.toLowerCase().includes('premium') ||
+    v.name.toLowerCase().includes('samantha') ||
+    v.name.toLowerCase().includes('daniel') ||
+    v.name.toLowerCase().includes('karen') ||
+    v.name.toLowerCase().includes('moira')
+  );
+  const rest = voices.filter(v => !preferred.includes(v));
+  const ordered = [...preferred, ...rest];
+
+  ordered.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v.name;
+    opt.textContent = `${v.name} (${v.lang})`;
+    if (v.default) opt.selected = true;
+    sel.appendChild(opt);
+  });
+
+  if (sel.options.length === 0) {
+    sel.innerHTML = '<option value="">No English voices found</option>';
+  }
+}
+
+synth.onvoiceschanged = loadVoices;
+loadVoices();
+
+// Sliders
+document.getElementById('rateRange').addEventListener('input', e => {
+  document.getElementById('rateVal').textContent = parseFloat(e.target.value).toFixed(1);
+});
+document.getElementById('pitchRange').addEventListener('input', e => {
+  document.getElementById('pitchVal').textContent = parseFloat(e.target.value).toFixed(1);
+});
+
+// State
+function setPlaying(active) {
+  const btn = document.getElementById('playBtn');
+  const dot = document.getElementById('statusDot');
+  const wave = document.getElementById('waveform');
+  const icon = document.getElementById('playIcon');
+  const label = document.getElementById('playLabel');
+
+  if (active) {
+    btn.classList.add('playing');
+    dot.classList.add('active');
+    dot.classList.remove('error');
+    wave.classList.add('playing');
+    icon.textContent = '■';
+    label.textContent = 'Speaking…';
+    document.getElementById('statusText').textContent = repeatMode ? 'Playing (repeat on)' : 'Playing';
+  } else {
+    btn.classList.remove('playing');
+    dot.classList.remove('active');
+    wave.classList.remove('playing');
+    icon.textContent = '▶';
+    label.textContent = 'Play Pronunciation';
+    document.getElementById('statusText').textContent = 'Ready';
+  }
+}
+
+function setError(msg) {
+  const dot = document.getElementById('statusDot');
+  dot.classList.remove('active');
+  dot.classList.add('error');
+  document.getElementById('statusText').textContent = msg;
+  setPlaying(false);
+}
+
+function startSpeech() {
+  synth.cancel();
+  const text = document.getElementById('textInput').value.trim();
+  if (!text) {
+    setError('No text entered');
+    return;
+  }
+  if (!synth) {
+    setError('Speech not supported in this browser');
+    return;
+  }
+
+  const utt = new SpeechSynthesisUtterance(text);
+  const selVoice = document.getElementById('voiceSelect').value;
+  if (selVoice) {
+    const voice = voices.find(v => v.name === selVoice);
+    if (voice) utt.voice = voice;
+  }
+  utt.rate = parseFloat(document.getElementById('rateRange').value);
+  utt.pitch = parseFloat(document.getElementById('pitchRange').value);
+  utt.lang = 'en-US';
+
+  utt.onstart = () => setPlaying(true);
+  utt.onend = () => {
+    if (repeatMode) {
+      setTimeout(startSpeech, 600);
+    } else {
+      setPlaying(false);
+    }
+  };
+  utt.onerror = e => setError('Speech error: ' + e.error);
+
+  currentUtterance = utt;
+  synth.speak(utt);
+}
+
+function togglePlay() {
+  if (synth.speaking) {
+    stopSpeech();
+  } else {
+    startSpeech();
+  }
+}
+
+function stopSpeech() {
+  repeatMode = false;
+  document.getElementById('repeatBtn').classList.remove('active');
+  document.getElementById('repeatBadge').style.display = 'none';
+  synth.cancel();
+  setPlaying(false);
+  document.getElementById('statusText').textContent = 'Stopped';
+}
+
+function toggleRepeat() {
+  repeatMode = !repeatMode;
+  const btn = document.getElementById('repeatBtn');
+  const badge = document.getElementById('repeatBadge');
+  btn.classList.toggle('active', repeatMode);
+  badge.style.display = repeatMode ? 'inline' : 'none';
+  if (repeatMode && !synth.speaking) startSpeech();
+}
+
+// Keyboard shortcut: Space to play/stop (when not in textarea)
+document.addEventListener('keydown', e => {
+  if (e.target === document.getElementById('textInput')) return;
+  if (e.key === ' ') { e.preventDefault(); togglePlay(); }
+  if (e.key === 'r' || e.key === 'R') toggleRepeat();
+  if (e.key === 'Escape') stopSpeech();
+});
+</script>
+</body>
+</html>
